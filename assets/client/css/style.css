@@ -137,8 +137,8 @@ a {
   justify-content: center;
 
 }
-.prevButton,
-.nextButton {
+.heightInput,
+.widthInput,.resizeButton {
   max-width: 200px;
   transition: 1s linear;
   padding: 10px 35px;
