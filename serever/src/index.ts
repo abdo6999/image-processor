@@ -1,51 +1,15 @@
-/** Use Axios to get data from restcountries api */
-import axios from 'axios';
-
-/** Use the free API https://restcountries.eu/
- * You will use the following endpoints
- * https://restcountries.eu/rest/v2/name/{name} for countries by name
- * https://restcountries.eu/rest/v2/regionalbloc/{regionalbloc} for region blocks
- */
-
-/** Create getCountry Function here */
-
-async function getCountry(countrie:string) {
-  const getApi = await axios(
-    `https://restcountries.com/v2/name/${countrie}?fullText=true`
-    )
-    const {capital,region,numericCode} = getApi.data[0]
-    const countryDetails = {capital,region,numericCode};
-  return countryDetails
-}
-
-/** Create a test for this getRegion function */
-async function getRegionCountries(regionalbloc: string) {
-  const getApi = await axios(
-    `https://restcountries.com/v2/regionalbloc/${regionalbloc}`
-  );
-  const data = getApi.data;
-  const countries = [];
-  for (let i = 0; i < data.length; i++) {
-    countries.push(data[i].name);
-  }
-  return countries;
-}
-
-/** Create getRegionCapitals function here */
-async function getRegionCapitals(regionCapital: string) {
-  const getApi = await axios(
-    `https://restcountries.com/v2/regionalbloc/${regionCapital}`
-  );
-  const data = getApi.data;
-  const countries = [];
-  for (let i = 0; i < data.length; i++) {
-    countries.push(data[i].capital);
-  }
-  return countries;
-}
-
-export default {
-  getCountry,
-  getRegionCountries,
-  getRegionCapitals
-};
+import * as express from "express";
+import { resolve } from "path";
+import routes from "./routes/gallery";
+const app = express();
+const PORT = 3000;
+// set the server
+app.get("/", (req, res) => {
+  res.send("working");
+});
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT: ${PORT}`);
+});
+// access assets to use
+app.use("/assets", express.static(resolve(__dirname, "../../assets")));
+app.use("/", routes);
