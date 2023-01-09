@@ -1,0 +1,38 @@
+{
+  "name": "8",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "jasmine": "jasmine ",
+    "test": "npm run build && npm run jasmine",
+    "start": "nodemon src/index.ts "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdo6999/image-processor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdo6999/image-processor/issues"
+  },
+  "homepage": "https://github.com/abdo6999/image-processor#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.15",
+    "@types/jasmine": "^4.3.1",
+    "@types/node": "^18.11.18",
+    "@types/supertest": "^2.0.12",
+    "jasmine": "^4.5.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "node": "^19.3.0",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
+}
