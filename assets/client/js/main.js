@@ -1,45 +1,94 @@
-
 let imgs = document.querySelectorAll("img");
-
-imgs.forEach((img, index) => {
+imgs.forEach((img) => {
   img.addEventListener("click", function (e) {
     if (e.target == this) {
-      // crate element
-      let openDiv = document.createElement("div"); //main div
-      let butonsSection = document.createElement("div"); // btn dev
-      let imgPreview = document.createElement("img"); 
-      let closeBtn = document.createElement("button");
-      let resizeBtn = document.createElement("button");
-      let heightInput = document.createElement("input");
-      let widthInput = document.createElement("input");
-      // set values
-      widthInput.value = e.target.naturalWidth;
-      heightInput.value = e.target.naturalHeight;
-      resizeBtn.innerHTML = "Resize";
-      closeBtn.innerText = "Close";
-      imgPreview.src = this.src;
-      // add classes
-      widthInput.classList.add("widthInput");
-      heightInput.classList.add("heightInput");
-      resizeBtn.classList.add("resizeButton");
-      closeBtn.classList.add("closeBtn");
-      imgPreview.classList.add("imgPreview");
-      openDiv.classList.add("openDiv");
-      // appen element
-      butonsSection.append(widthInput, heightInput, resizeBtn);
-      openDiv.append(imgPreview, butonsSection, closeBtn);
-      document.body.append(openDiv);
+      // create element with factory function (type,innerHTML,class,AttributeObject)
+      let btnSection = creatElement("div");
+      let openDiv = creatElement("div", '', "openDiv");
+      let imgPreview = creatElement("img", '', "imgPreview", {
+        src: `${this.src}`,
+      });
+      let closeBtn = creatElement("button", "Close", "closeBtn");
+      let resizeBtn = creatElement("button", "Resize", "resizeButton", {
+        type: "submit",
+      });
+      let heightInput = creatElement("input", '', "heightInput", {
+        require: "",
+        type: "number",
+        min: "150",
+        value: `${e.target.naturalHeight}`,
+      });
+      let widthInput = creatElement("input", '', "widthInput", {
+        require: "",
+        type: "number",
+        min: "150",
+        value: `${e.target.naturalWidth}`,
+      });
+      // append all 
+      btnSection.el.append(widthInput.el, heightInput.el, resizeBtn.el);
+      openDiv.el.append(imgPreview.el, btnSection.el, closeBtn.el);
+      document.body.append(openDiv.el);
       // close function
-      closeBtn.addEventListener("click", function () {
-        openDiv.remove();
+      closeBtn.addEvent({
+        click: function () {
+          openDiv.el.remove();
+        }
+      })
+      // navigate to
+      resizeBtn.addEvent({
+        click: function () {
+          let imageName = imgPreview.el.src.split("/").pop();
+          window.location.assign(
+            `http://localhost:3000/gallery/images?filename=${imageName}&width=${widthInput.el.value}&height=${heightInput.el.value}`
+          );
+        }
       });
-      // navigate to 
-      resizeBtn.addEventListener("click", function () {
-        let imageName = imgPreview.src.split("/").pop();
-        window.location.assign(
-          `http://localhost:3000/gallery/images?filename=${imageName}&width=${widthInput.value}&height=${heightInput.value}`
-        );
-      });
+      // disabled btn when input invalid
+      [heightInput,widthInput].map((el)=>{
+        el.addEvent({
+          change: function disabled() {
+            if (widthInput.el.validity.valid && heightInput.el.validity.valid) {
+              resizeBtn.el.disabled = false;
+            } else {
+              resizeBtn.el.disabled = true;
+              console.log("min value 150");
+            }
+          }
+        })
+      }) //close the map function
     }
   });
 });
+// factory function to crate element
+function creatElement(type, text, addClass, setAttObject) {
+  let el = document.createElement(type);
+  if (text) {
+        el.innerHTML = text;
+    }
+  if (addClass) {
+    el.classList.add(addClass);
+  }
+  if(setAttObject){
+    if (Object.keys(setAttObject).length !== 0) {
+      for (const [key, value] of Object.entries(setAttObject)) {
+        el.setAttribute(key, value);
+      }
+    }
+  }
+  return {
+    el,
+    setText(text) {
+      el.innerHTML = text;
+    },
+    setAtt(setAttObject) {
+      for (const [key, value] of Object.entries(setAttObject)) {
+        el.setAttribute(key, value);
+      }
+    },
+    addEvent(eventObject){
+      for (const [key, value] of Object.entries(eventObject)) {
+        el.addEventListener(key,value)
+      }
+    }
+  };
+}
