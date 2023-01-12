@@ -13,9 +13,9 @@ exports.routes = routes;
 // 1. path
 const assets = {
     // to get all images or specific imeage
-    images: (name = '') => (0, path_1.resolve)(__dirname, "../../assets/images", `${name}`),
-    source: (0, path_1.resolve)(__dirname, "../../assets/client/index.html"),
-    thumb: (name) => (0, path_1.resolve)(__dirname, "../../assets", `thumb/${name}`)
+    images: (name = '') => (0, path_1.resolve)(__dirname, '../../assets/images', `${name}`),
+    source: (0, path_1.resolve)(__dirname, '../../assets/client/index.html'),
+    thumb: (name) => (0, path_1.resolve)(__dirname, '../../assets', `thumb/${name}`)
 };
 exports.assets = assets;
 // 2. get images name to serve gallery
@@ -23,29 +23,32 @@ const images = (0, get_1.getDir)(assets.images());
 exports.images = images;
 const source = (0, get_1.getFile)(assets.source);
 // lunch gallery
-routes.get("/gallery", (req, res) => {
+routes.get('/gallery', (req, res) => {
     const template = Handlebars.compile(source);
-    let data = { title: "gallery", images: images };
+    const data = { title: 'gallery', images: images };
     const result = template(data);
     res.status(200).send(result);
 });
 // image resize
-routes.get("/gallery/images", (req, res) => {
+routes.get('/gallery/images', (req, res) => {
     const filename = req.query.filename;
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
     if (Number.isNaN(width)) {
-        res.status(418).send("enter valid width");
+        res.status(418).send('enter valid width');
     }
     else if (Number.isNaN(height)) {
-        res.status(418).send("enter valid height");
+        res.status(418).send('enter valid height');
     }
     else if (!fs.existsSync(assets.images(filename))) {
-        res.status(418).send("enter valid filename");
+        res.status(418).send('enter valid filename');
     }
     else {
         (0, resize_1.default)(filename, width, height).then(() => {
-            res.status(200).sendFile(assets.thumb(`${filename.split('.').slice(0, -1).join('.')}_${width}x${height}.${filename.substr(filename.lastIndexOf('.') + 1)}`));
+            res.status(200).sendFile(assets.thumb(`${filename
+                .split('.')
+                .slice(0, -1)
+                .join('.')}_${width}x${height}.${filename.substr(filename.lastIndexOf('.') + 1)}`));
         });
     }
 });
