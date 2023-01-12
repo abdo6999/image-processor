@@ -1,9 +1,11 @@
 import * as express from "express";
 import { resolve } from "path";
+
 import {routes} from "./routes/gallery";
 const app = express();
 const PORT = 3000;
 // set the server
+
 app.get("/", (req, res) => {
   res.send("Server working");
 });
@@ -19,3 +21,4 @@ app.get("*", function (req, res) {
   res.status(404).send("404");
 });
 export default app;
+

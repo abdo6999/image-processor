@@ -3,7 +3,7 @@ imgs.forEach((img) => {
   img.addEventListener("click", function (e) {
     if (e.target == this) {
       // create element with factory function (type,innerHTML,class,AttributeObject)
-      let btnSection = creatElement("div");
+      let btnSection = creatElement("div",'','butonsSection');
       let openDiv = creatElement("div", '', "openDiv");
       let imgPreview = creatElement("img", '', "imgPreview", {
         src: `${this.src}`,

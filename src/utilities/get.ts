@@ -6,7 +6,7 @@ function getFile(filePath: string) {
 function getDir(DirPath: string) {
   let images: Array<string | object> = fs.readdirSync(DirPath);
   for (let i = 0; i < images.length; i++) {
-    images[i] = { path: `/assets/images/${images[i]}` };
+    images[i] = { path: `http://localhost:3000/assets/images/${images[i]}` };
   }
   return images;
 }

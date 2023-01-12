@@ -128,15 +128,17 @@ a {
 .imgPreview {
   width: 70%;
   object-fit: scale-down;
-  height: auto;
+  height: 70%;
   border-radius:6px;
 }
 .butonsSection {
   display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
   align-items: center;
   justify-content: center;
-
 }
+
 .heightInput,
 .widthInput,.resizeButton {
   max-width: 200px;
@@ -184,6 +186,7 @@ a {
     font-size: 18px;
     padding: 8px 25px;
   }
+
 }
 
 @media (max-width: 540px) {
@@ -213,5 +216,7 @@ a {
     max-height: 50vh;
     height: auto;
   }
-  
+  .butonsSection{
+    flex-direction: column;
+  }
 }
