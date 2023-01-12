@@ -1,7 +1,7 @@
 # image-processor
-like the name says this is a image processor use it to resize an image 
+this is a image processor use it to resize an image 
 ## script 
- notes to run npm install before
+ notes to run npm install before and start from /gallery
  
    npm run build to build the project. The build artifacts will be stored in the `dist/` directory.
    
@@ -9,7 +9,12 @@ like the name says this is a image processor use it to resize an image
    
    npm run start to run a dev server.
    
+   npm run lint to run a eslint.
+   
+   npm run prettier to run a dev server.
+   
    node dist/. to run the build version
+   
    
  
  
