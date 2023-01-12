@@ -22,13 +22,17 @@ this is a image processor use it to resize an image
  ## endpoint  
   ### status 200
    "/" root notes it is empty
+   
    "/gallery" here where the images display
+   
    "/gallery/images" add the qurey filename= {sring and exist} width = {number > 0} height = {number > 0}
+  
   ### status 418
    if any of this condition return false 
    
    "/gallery/images" add the qurey filename= {sring and exist} width = {number > 0} height = {number > 0}
-  ### status 404
+ 
+ ### status 404
    if route not exist
    
  
