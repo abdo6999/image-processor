@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.images = exports.assets = exports.routes = void 0;
 const express = require("express");
 const resize_1 = require("../utilities/resize");
-const Handlebars = require("handlebars");
 const fs = require("fs");
 const path_1 = require("path");
+const Handlebars = require("handlebars");
 const get_1 = require("../utilities/get");
 const routes = express.Router();
 exports.routes = routes;
@@ -14,22 +14,20 @@ exports.routes = routes;
 const assets = {
     // to get all images or specific imeage
     images: (name = '') => (0, path_1.resolve)(__dirname, "../../assets/images", `${name}`),
-    sourse: (0, path_1.resolve)(__dirname, "../../assets/client/index.html"),
+    source: (0, path_1.resolve)(__dirname, "../../assets/client/index.html"),
     thumb: (name) => (0, path_1.resolve)(__dirname, "../../assets", `thumb/${name}`)
 };
 exports.assets = assets;
 // 2. get images name to serve gallery
 const images = (0, get_1.getDir)(assets.images());
 exports.images = images;
-// 3. get sourse file name to serve gallery html code
-const sourse = (0, get_1.getFile)(assets.sourse);
+const source = (0, get_1.getFile)(assets.source);
 // lunch gallery
 routes.get("/gallery", (req, res) => {
-    // use Handlebars to set the data in {{}}
-    let template = Handlebars.compile(sourse);
+    const template = Handlebars.compile(source);
     let data = { title: "gallery", images: images };
-    let result = template(data);
-    res.send(result);
+    const result = template(data);
+    res.status(200).send(result);
 });
 // image resize
 routes.get("/gallery/images", (req, res) => {
@@ -37,17 +35,17 @@ routes.get("/gallery/images", (req, res) => {
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
     if (Number.isNaN(width)) {
-        res.send("enter valid width");
+        res.status(418).send("enter valid width");
     }
     else if (Number.isNaN(height)) {
-        res.send("enter valid height");
+        res.status(418).send("enter valid height");
     }
     else if (!fs.existsSync(assets.images(filename))) {
-        res.send("enter valid filename");
+        res.status(418).send("enter valid filename");
     }
     else {
         (0, resize_1.default)(filename, width, height).then(() => {
-            res.sendFile(assets.thumb(filename));
+            res.status(200).sendFile(assets.thumb(`${filename.split('.').slice(0, -1).join('.')}_${width}x${height}.${filename.substr(filename.lastIndexOf('.') + 1)}`));
         });
     }
 });

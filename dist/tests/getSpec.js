@@ -14,11 +14,12 @@ describe('utilitie get file test', () => {
             { path: '/assets/images/fjord.jpg' },
             { path: '/assets/images/icelandwaterfall.jpg' },
             { path: '/assets/images/palmtunnel.jpg' },
-            { path: '/assets/images/santamonica.jpg' }
+            { path: '/assets/images/santamonica.jpg' },
+            { path: '/assets/images/unnamed.png' },
         ]);
     });
     it("should be true if the file exist", () => {
-        const data = (0, get_1.getFile)(gallery_1.assets.sourse);
+        const data = (0, get_1.getFile)(gallery_1.assets.source);
         expect(data).toBeTruthy();
     });
 });
