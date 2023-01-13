@@ -24,18 +24,18 @@ const assets = {
     )
 };
 // 2. get images name to serve gallery
-const images = getDir(assets.images());
-const source = getFile(assets.source);
+const images:object[] = getDir(assets.images());
+const source:string = getFile(assets.source);
 // lunch gallery
 routes.get('/gallery', (req, res) => {
   const template = Handlebars.compile(source);
   const data = { title: 'gallery', images: images };
-  const result = template(data);
+  const result:string = template(data);
   res.status(200).send(result);
 });
 // image resize
 routes.get('/gallery/images',  (req, res) => {
-  const filename = (req.query.filename as unknown) as string;
+  const filename:string = (req.query.filename as unknown) as string;
   const width: number = parseInt(req.query.width as string) as number;
   const height: number = parseInt(req.query.height as string) as number;
   if (Number.isNaN(width) || width < 0) {

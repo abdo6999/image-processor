@@ -3,14 +3,14 @@ import { resolve } from 'path';
 
 import { routes } from './routes/gallery';
 const app = express();
-const PORT = 3000;
+const PORT:number = 3000;
 // set the server
 
 app.get('/', (req, res) => {
   res.send('Server working');
 });
 app.listen(PORT, () => {
-  console.log("Running in :" + process.env.NODE_ENV);
+  console.log("Running in :" + `http://localhost:${PORT}`);
 });
 // access assets to use
 app.use('/assets', express.static(resolve(__dirname, '../assets')));
