@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
   res.send('Server working');
 });
 app.listen(PORT, () => {
-  console.log(`Server is running on PORT: ${PORT}`);
+  console.log("Running in :" + process.env.NODE_ENV);
 });
 // access assets to use
 app.use('/assets', express.static(resolve(__dirname, '../assets')));
