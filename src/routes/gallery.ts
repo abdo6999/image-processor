@@ -3,6 +3,8 @@ import resize from '../utilities/resize';
 import * as fs from 'fs';
 import { resolve } from 'path';
 import * as Handlebars from 'handlebars';
+import { Request, Response } from "express";
+
 import { getDir, getFile } from '../utilities/get';
 const routes = express.Router();
 // get needed data to gallery
@@ -27,14 +29,14 @@ const assets = {
 const images:object[] = getDir(assets.images());
 const source:string = getFile(assets.source);
 // lunch gallery
-routes.get('/gallery', (req, res) => {
+routes.get('/gallery', (req:Request, res:Response):void => {
   const template = Handlebars.compile(source);
   const data = { title: 'gallery', images: images };
   const result:string = template(data);
   res.status(200).send(result);
 });
 // image resize
-routes.get('/gallery/images',  (req, res) => {
+routes.get('/gallery/images',  (req:Request, res:Response):void => {
   const filename:string = (req.query.filename as unknown) as string;
   const width: number = parseInt(req.query.width as string) as number;
   const height: number = parseInt(req.query.height as string) as number;
