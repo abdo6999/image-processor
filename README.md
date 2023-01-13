@@ -1,7 +1,7 @@
 # image-processor
 this is a image processor use it to resize an image 
 ## start the project
- 1. clon the repo
+ 1. clone the repo
  2. run npm install
  3. run npm start to serve 
  4. go to /gallrey 
