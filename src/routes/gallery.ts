@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { resolve } from 'path';
 import * as Handlebars from 'handlebars';
 import { Request, Response } from "express";
+import { Query } from 'express-serve-static-core';
 
 import { getDir, getFile } from '../utilities/get';
 const routes = express.Router();
@@ -36,10 +37,10 @@ routes.get('/gallery', (req:Request, res:Response):void => {
   res.status(200).send(result);
 });
 // image resize
-routes.get('/gallery/images',  (req:Request, res:Response):void => {
-  const filename:string = (req.query.filename as unknown) as string;
-  const width: number = parseInt(req.query.width as string) as number;
-  const height: number = parseInt(req.query.height as string) as number;
+routes.get('/gallery/images',  (req:TypedRequestQuery<{filename:string,width:string,height:string}>, res:Response):void => {
+  const filename= req.query.filename 
+  const width: number = parseInt(req.query.width ) as number;
+  const height: number = parseInt(req.query.height ) as number;
   if (Number.isNaN(width) || width < 0) {
     res.status(418).send('enter valid width');
   } else if (Number.isNaN(height) || height < 0) {
@@ -56,4 +57,7 @@ routes.get('/gallery/images',  (req:Request, res:Response):void => {
     }
   }
 });
+export interface TypedRequestQuery<T extends Query> extends Express.Request {
+     query: T
+}
 export { routes, assets, images };
