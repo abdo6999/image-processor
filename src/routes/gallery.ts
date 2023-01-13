@@ -11,7 +11,17 @@ const assets = {
   // to get all images or specific imeage
   images: (name = '') => resolve(__dirname, '../../assets/images', `${name}`),
   source: resolve(__dirname, '../../assets/client/index.html'),
-  thumb: (name: string) => resolve(__dirname, '../../assets', `thumb/${name}`)
+  thumb: (name: string, width: number, height: number) =>
+    resolve(
+      __dirname,
+      '../../assets',
+      `thumb/${`${name
+        .split('.')
+        .slice(0, -1)
+        .join('.')}_${width}x${height}.${name.substr(
+        name.lastIndexOf('.') + 1
+      )}`}`
+    )
 };
 // 2. get images name to serve gallery
 const images = getDir(assets.images());
@@ -24,29 +34,24 @@ routes.get('/gallery', (req, res) => {
   res.status(200).send(result);
 });
 // image resize
-routes.get('/gallery/images', (req, res) => {
+routes.get('/gallery/images',  (req, res) => {
   const filename = (req.query.filename as unknown) as string;
   const width: number = parseInt(req.query.width as string) as number;
   const height: number = parseInt(req.query.height as string) as number;
-  if (Number.isNaN(width)) {
+  if (Number.isNaN(width) || width < 0) {
     res.status(418).send('enter valid width');
-  } else if (Number.isNaN(height)) {
+  } else if (Number.isNaN(height) || height < 0) {
     res.status(418).send('enter valid height');
   } else if (!fs.existsSync(assets.images(filename))) {
     res.status(418).send('enter valid filename');
   } else {
-    resize(filename, width, height).then(() => {
-      res.status(200).sendFile(
-        assets.thumb(
-          `${filename
-            .split('.')
-            .slice(0, -1)
-            .join('.')}_${width}x${height}.${filename.substr(
-            filename.lastIndexOf('.') + 1
-          )}`
-        )
-      );
-    });
+    if (fs.existsSync(assets.thumb(filename, width, height))) {
+      res.status(200).sendFile(assets.thumb(filename, width, height));
+    } else {
+      resize(filename, width, height).then(() => {
+        res.status(200).sendFile(assets.thumb(filename, width, height));
+      });
+    }
   }
 });
 export { routes, assets, images };

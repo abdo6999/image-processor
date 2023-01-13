@@ -15,7 +15,10 @@ const assets = {
     // to get all images or specific imeage
     images: (name = '') => (0, path_1.resolve)(__dirname, '../../assets/images', `${name}`),
     source: (0, path_1.resolve)(__dirname, '../../assets/client/index.html'),
-    thumb: (name) => (0, path_1.resolve)(__dirname, '../../assets', `thumb/${name}`)
+    thumb: (name, width, height) => (0, path_1.resolve)(__dirname, '../../assets', `thumb/${`${name
+        .split('.')
+        .slice(0, -1)
+        .join('.')}_${width}x${height}.${name.substr(name.lastIndexOf('.') + 1)}`}`)
 };
 exports.assets = assets;
 // 2. get images name to serve gallery
@@ -34,21 +37,23 @@ routes.get('/gallery/images', (req, res) => {
     const filename = req.query.filename;
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
-    if (Number.isNaN(width)) {
+    if (Number.isNaN(width) || width < 0) {
         res.status(418).send('enter valid width');
     }
-    else if (Number.isNaN(height)) {
+    else if (Number.isNaN(height) || height < 0) {
         res.status(418).send('enter valid height');
     }
     else if (!fs.existsSync(assets.images(filename))) {
         res.status(418).send('enter valid filename');
     }
     else {
-        (0, resize_1.default)(filename, width, height).then(() => {
-            res.status(200).sendFile(assets.thumb(`${filename
-                .split('.')
-                .slice(0, -1)
-                .join('.')}_${width}x${height}.${filename.substr(filename.lastIndexOf('.') + 1)}`));
-        });
+        if (fs.existsSync(assets.thumb(filename, width, height))) {
+            res.status(200).sendFile(assets.thumb(filename, width, height));
+        }
+        else {
+            (0, resize_1.default)(filename, width, height).then(() => {
+                res.status(200).sendFile(assets.thumb(filename, width, height));
+            });
+        }
     }
 });

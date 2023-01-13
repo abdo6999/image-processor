@@ -1,13 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sharp = require("sharp");
-const path_1 = require("path");
+const gallery_1 = require("../routes/gallery");
 function resize(name, width, height) {
-    const input = (0, path_1.resolve)(__dirname, '../../assets', `images/${name}`);
-    const ouput = (0, path_1.resolve)(__dirname, '../../assets', `thumb/${name
-        .split('.')
-        .slice(0, -1)
-        .join('.')}_${width}x${height}.${name.substring(name.lastIndexOf('.') + 1)}`);
+    const input = gallery_1.assets.images(name);
+    const ouput = gallery_1.assets.thumb(name, width, height);
     return sharp(input)
         .resize(width, height)
         .toFile(ouput);

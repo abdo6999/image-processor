@@ -214,7 +214,7 @@ a {
   .imgPreview {
     width: 90%;
     max-height: 50vh;
-    height: auto;
+    height: 70%;
   }
   .butonsSection{
     flex-direction: column;
